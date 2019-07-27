@@ -17,8 +17,6 @@ public class QuestionController {
     @Autowired
     QuestionRepository questionRepository;
 
-
-    //GET'S
     @RequestMapping(value = "/all-questions", method = RequestMethod.GET)
     public List<Question> showAll(){
         return questionRepository.findAll();
@@ -26,18 +24,15 @@ public class QuestionController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> findOne(@RequestParam("code") Long id) {
-        Optional<Question> q;
-        if (questionRepository.findById(id) == null) {
-            q = questionRepository.findById(id);
+        Optional<Question> q = questionRepository.findById(id);
+        if(q.isPresent()){
             return new ResponseEntity<>(q, HttpStatus.OK);
-
         }else{
-        return new ResponseEntity<>("Questão não encontrada", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Questão não encontrada", HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    //POST
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Question> add(@RequestBody Question q){
         questionRepository.save(q);
