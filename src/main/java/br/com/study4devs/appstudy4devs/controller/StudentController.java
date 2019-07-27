@@ -2,8 +2,6 @@ package br.com.study4devs.appstudy4devs.controller;
 
 import br.com.study4devs.appstudy4devs.Repository.StudentRepository;
 import br.com.study4devs.appstudy4devs.model.Student;
-import lombok.Data;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/student")
-@Data
 public class StudentController {
 
     @Autowired
