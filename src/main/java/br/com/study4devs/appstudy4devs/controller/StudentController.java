@@ -17,10 +17,10 @@ public class StudentController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody Student s){
         if( studentRepository.findByEmail(s.getEmail()) != null){
-            return new ResponseEntity<>("email já cadastrado", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("email já cadastrado", HttpStatus.IM_USED); //226
         }
         if( studentRepository.findByLogin(s.getLogin()) != null){
-            return new ResponseEntity<>("login já cadastrado", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("login já cadastrado", HttpStatus.BAD_REQUEST); //400
         }
         studentRepository.save(s);
         return new ResponseEntity<>(s, HttpStatus.CREATED);
@@ -35,7 +35,7 @@ public class StudentController {
             if( s.getPassword().equals(password)){
                 return new ResponseEntity<>(s, HttpStatus.OK);
             }else{
-                return new ResponseEntity<>("Favor verificar os campos", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Favor verificar os campos",HttpStatus.BAD_REQUEST);
             }
         }else{
             return new ResponseEntity<>("Favor verificar os campos", HttpStatus.BAD_REQUEST);

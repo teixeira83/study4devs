@@ -25,7 +25,10 @@ public class Student {
 
     @Column(length=50, nullable = false)
     private String email;
+
     private int points;
+
+    private boolean admin;
 
     public int whatsMyRank(){
         int temp = 0;
