@@ -30,6 +30,10 @@ public class Student {
 
     private boolean admin;
 
+    private int questionsAnswered;
+
+    private int rightAnswers;
+
     public int whatsMyRank(){
         int temp = 0;
         return temp;
