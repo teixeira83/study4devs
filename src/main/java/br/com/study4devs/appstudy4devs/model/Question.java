@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,13 +27,12 @@ public class Question {
     @Column(length=200)
     private String fourthAnswer;
 
-    public enum Category {
-        JAVA,
-        JAVASCRIPT,
-        TYPESCRIPT,
-        PYTHON,
-        PHP;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category")
+    private Category category;
+
+    @ManyToMany(mappedBy = "question")
+    private List<Student> student;
 
     public boolean isTheRightAnswer(){
         return true;

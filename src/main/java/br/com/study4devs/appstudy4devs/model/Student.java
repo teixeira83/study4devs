@@ -35,13 +35,13 @@ public class Student {
 
     private int rightAnswers;
 
-    public enum Category {
-        JAVA,
-        JAVASCRIPT,
-        TYPESCRIPT,
-        PYTHON,
-        PHP;
-    }
+    @ManyToMany
+    private List<Question> question;
+
+    @ElementCollection(targetClass = Category.class)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categorys")
+    private List<Category> category;
 
     public int whatsMyRank(){
         int temp = 0;
