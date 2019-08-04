@@ -26,6 +26,14 @@ public class Question {
     @Column(length=200)
     private String fourthAnswer;
 
+    public enum Category {
+        JAVA,
+        JAVASCRIPT,
+        TYPESCRIPT,
+        PYTHON,
+        PHP;
+    }
+
     public boolean isTheRightAnswer(){
         return true;
     }

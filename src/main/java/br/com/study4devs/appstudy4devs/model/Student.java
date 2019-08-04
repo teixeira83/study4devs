@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +34,14 @@ public class Student {
     private int questionsAnswered;
 
     private int rightAnswers;
+
+    public enum Category {
+        JAVA,
+        JAVASCRIPT,
+        TYPESCRIPT,
+        PYTHON,
+        PHP;
+    }
 
     public int whatsMyRank(){
         int temp = 0;
