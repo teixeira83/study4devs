@@ -43,8 +43,15 @@ public class Student {
     @Column(name = "categorys")
     private List<Category> category;
 
+
+
     public int whatsMyRank(){
         int temp = 0;
         return temp;
     }
+
+    public void changeCategory(List<Category> categorys){
+        this.category = categorys;
+    }
+
 }
