@@ -3,14 +3,13 @@ package br.com.study4devs.appstudy4devs.controller;
 import br.com.study4devs.appstudy4devs.Repository.StudentRepository;
 import br.com.study4devs.appstudy4devs.model.Category;
 import br.com.study4devs.appstudy4devs.model.Student;
-import org.hibernate.cache.spi.CacheTransactionSynchronization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/student")
@@ -38,7 +37,7 @@ public class StudentController {
         if(studentRepository.findByLogin(login) != null){
             s = studentRepository.findByLogin(login);
             if( s.getPassword().equals(password)){
-                return new ResponseEntity<>(s, HttpStatus.OK);
+                return new ResponseEntity<>(s.transformToDTO(), HttpStatus.OK);
             }else{
                 return new ResponseEntity<>("Favor verificar os campos",HttpStatus.BAD_REQUEST);
             }
@@ -51,7 +50,6 @@ public class StudentController {
     @RequestMapping(value = "/change-categorys",method = RequestMethod.POST)
     public ResponseEntity<?> changeCategorys(@RequestBody final List<Category> jsonString,
                                              @RequestParam("studentId") final Long id){
-
         Student s = studentRepository.findById(id).get();
         s.changeCategory(jsonString);
         studentRepository.save(s);

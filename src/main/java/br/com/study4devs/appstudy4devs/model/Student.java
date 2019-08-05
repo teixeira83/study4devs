@@ -36,6 +36,9 @@ public class Student {
     private int rightAnswers;
 
     @ManyToMany
+    @JoinTable(name = "student_question",
+               joinColumns = @JoinColumn(name = "student_id"),
+               inverseJoinColumns = @JoinColumn(name = "question_id"))
     private List<Question> question;
 
     @ElementCollection(targetClass = Category.class)
@@ -52,6 +55,11 @@ public class Student {
 
     public void changeCategory(List<Category> categorys){
         this.category = categorys;
+    }
+
+    public StudentDTO transformToDTO(){
+        StudentDTO studentDTO = new StudentDTO(this.id,this.name,this.login,this.email,this.points,this.questionsAnswered,this.rightAnswers);
+        return studentDTO;
     }
 
 }
