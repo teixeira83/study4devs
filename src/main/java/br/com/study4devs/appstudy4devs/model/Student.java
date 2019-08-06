@@ -58,7 +58,7 @@ public class Student {
     }
 
     public StudentDTO transformToDTO(){
-        StudentDTO studentDTO = new StudentDTO(this.id,this.name,this.login,this.email,this.points,this.questionsAnswered,this.rightAnswers);
+        StudentDTO studentDTO = new StudentDTO(this.id,this.name,this.login,this.email,this.points,this.questionsAnswered,this.rightAnswers,this.category);
         return studentDTO;
     }
 

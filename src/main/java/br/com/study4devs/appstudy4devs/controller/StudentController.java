@@ -1,13 +1,16 @@
 package br.com.study4devs.appstudy4devs.controller;
 
+import br.com.study4devs.appstudy4devs.Repository.QuestionRepository;
 import br.com.study4devs.appstudy4devs.Repository.StudentRepository;
 import br.com.study4devs.appstudy4devs.model.Category;
+import br.com.study4devs.appstudy4devs.model.Question;
 import br.com.study4devs.appstudy4devs.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,6 +20,9 @@ public class StudentController {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    QuestionRepository questionRepository;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody Student s){
@@ -55,5 +61,27 @@ public class StudentController {
         studentRepository.save(s);
         return new ResponseEntity<>(s.getCategory(), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/answer", method = RequestMethod.POST)
+    public ResponseEntity<?> addAnswer(@RequestParam("studentId") final Long studentId,
+                                       @RequestParam("questionId") final Long questionId,
+                                       @RequestParam("answer") int answer){
+
+
+        Student s = studentRepository.findById(studentId).get();
+        Question q = questionRepository.findById(questionId).get();
+
+        if( q.getRightAnswer() == answer){
+            List<Question> questions = new ArrayList<>();
+            questions = s.getQuestion();
+            questions.add(q);
+            s.setQuestion(questions);
+            studentRepository.save(s);
+            return new ResponseEntity<>("Resposta Correta", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Resposta Errada", HttpStatus.OK);
+    }
+
 
 }
