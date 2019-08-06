@@ -62,4 +62,16 @@ public class Student {
         return studentDTO;
     }
 
+    public int increaseAnswered(){
+        return this.questionsAnswered++;
+    }
+
+    public int increaseRightAnswered(){
+        return this.rightAnswers++;
+    }
+
+    public int increasePoints(){
+        return this.points+=10;
+    }
+
 }

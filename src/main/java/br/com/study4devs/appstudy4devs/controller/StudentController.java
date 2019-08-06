@@ -5,6 +5,7 @@ import br.com.study4devs.appstudy4devs.Repository.StudentRepository;
 import br.com.study4devs.appstudy4devs.model.Category;
 import br.com.study4devs.appstudy4devs.model.Question;
 import br.com.study4devs.appstudy4devs.model.Student;
+import br.com.study4devs.appstudy4devs.model.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +72,11 @@ public class StudentController {
         Student s = studentRepository.findById(studentId).get();
         Question q = questionRepository.findById(questionId).get();
 
+        s.increaseAnswered();
+        studentRepository.save(s);
         if( q.getRightAnswer() == answer){
+            s.increaseRightAnswered();
+            s.increasePoints();
             List<Question> questions = new ArrayList<>();
             questions = s.getQuestion();
             questions.add(q);
@@ -83,5 +88,12 @@ public class StudentController {
         return new ResponseEntity<>("Resposta Errada", HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    public ResponseEntity<?> refreshStudent(@RequestParam("studentId") Long id){
+        Student s = studentRepository.findById(id).get();
+        StudentDTO sDTO = s.transformToDTO();
+        return new ResponseEntity<>(sDTO, HttpStatus.OK);
+    }
 
 }
