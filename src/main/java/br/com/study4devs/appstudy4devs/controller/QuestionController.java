@@ -4,6 +4,7 @@ import br.com.study4devs.appstudy4devs.Repository.QuestionRepository;
 import br.com.study4devs.appstudy4devs.Repository.StudentRepository;
 import br.com.study4devs.appstudy4devs.model.Category;
 import br.com.study4devs.appstudy4devs.model.Question;
+import br.com.study4devs.appstudy4devs.model.QuestionDTO;
 import br.com.study4devs.appstudy4devs.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,47 +60,32 @@ public class QuestionController {
 
         Student s = studentRepository.findById(id).get();
         Random random = new Random();
-        int categoryRandom = random.nextInt( s.getCategory().size() );
-        Category category = s.getCategory().get(categoryRandom);
 
-        //return all questions about the random category
-        List<Question> questionList = questionRepository.findByCategory(category);
+        //criar listas com parametros do student
+        List<Category> studentCategorys = s.getCategory(); //recebe lista de category do student
+        List<Question> questionsDone = s.getQuestion(); // recebe lista de questões feitas pelo student
 
-        List<Question> questionsDone = s.getQuestion();
-        int aux = 0;
-        int randomQuestion;
         do{
-            randomQuestion = random.nextInt( questionList.size() );
-            aux = questionList.size();
-            for( int v = 0; v < questionsDone.size(); v++){
-                if(questionList.get(randomQuestion).equals(questionsDone.get(v))){
-                    questionList.remove(randomQuestion);
-                    break;
+            Collections.shuffle(studentCategorys);
+            List<Question> questionList = questionRepository.findByCategory(studentCategorys.get(0)); //cria lista de questões da categoria random escolhida
+            Collections.shuffle(questionList); //embaralhar lista
+            if(questionsDone.size() == 0){
+                QuestionDTO questionDTO = questionList.get(0).transformToDTO();
+                return new ResponseEntity<QuestionDTO>(questionDTO, HttpStatus.OK);
+            }
+
+            for(int i = 0; i < questionList.size(); i++){
+                if(questionsDone.contains(questionList.get(i))){
+                    continue;
+                }else{
+                    QuestionDTO questionDTO = questionList.get(i).transformToDTO();
+                    return new ResponseEntity<QuestionDTO>(questionDTO, HttpStatus.OK);
                 }
             }
-        }while( aux != questionList.size());
+            studentCategorys.remove(0);
+        }while (studentCategorys.size() > 0 );
 
-
-
-//        System.out.println(questionList.get(0).getTitle());
-//        List<Student> studentList = new ArrayList<>();
-//        studentList = questionList.get(0).getStudent();
-//        studentList.add(s);
-//        questionList.get(0).setStudent(studentList);
-//        System.out.println(s.getId());
-//        System.out.println(s.getQuestion());
-//        System.out.println(questionList.get(0).getId());
-//        System.out.println(questionList.get(0).getStudent());
-//        List<Question> questList = new ArrayList<>();
-//        questList = s.getQuestion();
-//        questList.add(questionRepository.findById(4L).get());
-//        s.setQuestion(questList);
-//
-//        studentRepository.save(s);
-//        for( int i = 0; i < questionList.size(); i++ ){
-//            Long idQuestion = questionList.get(i).getId();
-//        }
-        return new ResponseEntity<Question>(questionList.get(randomQuestion), HttpStatus.OK);
+        return new ResponseEntity<>("Você já respondeu todas as perguntas dos interesses selecionados.", HttpStatus.BAD_REQUEST);
     }
 
 }

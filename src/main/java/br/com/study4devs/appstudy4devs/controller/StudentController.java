@@ -85,7 +85,7 @@ public class StudentController {
             return new ResponseEntity<>("Resposta Correta", HttpStatus.OK);
         }
 
-        return new ResponseEntity<>("Resposta Errada", HttpStatus.OK);
+        return new ResponseEntity<>("Resposta Errada", HttpStatus.EXPECTATION_FAILED);
     }
 
 

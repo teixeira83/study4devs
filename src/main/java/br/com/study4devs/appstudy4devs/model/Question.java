@@ -41,4 +41,9 @@ public class Question {
     public void markAnswer(){
     }
 
+    public QuestionDTO transformToDTO(){
+        QuestionDTO questionDTO  = new QuestionDTO(this.id,this.title,this.rightAnswer,this.firstAnswer,this.secondAnswer,this.thirdAnswer,this.fourthAnswer,this.category);
+        return questionDTO;
+    }
+
 }
